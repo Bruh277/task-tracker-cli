@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Task {
     private String id;
@@ -21,6 +22,18 @@ public class Task {
         this.status = status;
         this.taskCreationTime = taskCreationTime;
         this.lastUpdatedTime = lastUpdatedTime;
+    }
+
+    public String convertTaskToString(){
+        return """
+                {
+                    "id": "%s",
+                    "description": "%s",
+                    "status": "%s",
+                    "taskCreationTime": "%s",
+                    "lastUpdatedTime": "%s"
+                }   
+                """.formatted(this.id, this.description, this.status.name(), this.createdAt, this.updatedAt);
     }
 
     public String getId(){
