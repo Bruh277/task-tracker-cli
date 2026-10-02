@@ -76,6 +76,32 @@ public class TaskManager {
         }
     }
 
+    //There's no need to specify the filePath, since the filePath never changes from the initialized one.
+    public void saveTasksToJson() throws IOException {
+        StringBuilder jsonFormattedTaskList = new StringBuilder();
+
+        jsonFormattedTaskList.append("[\n");
+
+        int i = 0;
+        while(i < this.taskList.size()){
+
+            String stringifiedTask = this.taskList.get(i).convertTaskToString();
+            jsonFormattedTaskList.append(stringifiedTask);
+
+            if(i < this.taskList.size()-1){
+                jsonFormattedTaskList.append(",\n");
+            } else {
+                jsonFormattedTaskList.append("\n");
+            }
+
+            i++;
+        }
+
+        jsonFormattedTaskList.append("]");
+
+        Files.writeString(this.filePath, jsonFormattedTaskList.toString());
+    }
+
     public ArrayList<Task> getTaskList(){
         return this.taskList;
     }

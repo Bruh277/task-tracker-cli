@@ -32,8 +32,8 @@ public class Task {
                     "status": "%s",
                     "taskCreationTime": "%s",
                     "lastUpdatedTime": "%s"
-                }   
-                """.formatted(this.id, this.description, this.status.name(), this.createdAt, this.updatedAt);
+                }
+                """.formatted(this.id, this.description, this.status.name(), this.taskCreationTime, this.lastUpdatedTime);
     }
 
     public String getId(){
