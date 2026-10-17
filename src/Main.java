@@ -2,12 +2,10 @@ import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args){
-        TaskManager taskManager = new TaskManager("tasks.json");
-
+    public static void main(String[] args) {
         try {
-            taskManager.initializeFile();
-        } catch(IOException error){
+            TaskManager taskManager = new TaskManager("tasks.json");
+        } catch (IOException error) {
             error.printStackTrace();
         }
     }

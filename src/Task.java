@@ -2,13 +2,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Task {
-    private String id;
+    private int id;
     private String description;
     private TaskStatus status;
     private LocalDateTime taskCreationTime;
     private LocalDateTime lastUpdatedTime;
 
-    public Task(String id, String description){
+    public Task(int id, String description){
         this.id = id;
         this.description = description;
         this.status = TaskStatus.TODO;
@@ -16,7 +16,14 @@ public class Task {
         this.lastUpdatedTime = LocalDateTime.now();
     }
 
-    public Task(String id, String description, TaskStatus status, LocalDateTime taskCreationTime, LocalDateTime lastUpdatedTime){
+    public Task(int id, String description, TaskStatus status){
+        this.id = id;
+        this.description = description;
+        this.status = status;
+    }
+
+    //Don't modify this. The point is to use this constructor to load in tasks listed in the JSON file.
+    public Task(int id, String description, TaskStatus status, LocalDateTime taskCreationTime, LocalDateTime lastUpdatedTime){
         this.id = id;
         this.description = description;
         this.status = status;
@@ -36,7 +43,7 @@ public class Task {
                 """.formatted(this.id, this.description, this.status.name(), this.taskCreationTime, this.lastUpdatedTime);
     }
 
-    public String getId(){
+    public int getId(){
         return this.id;
     }
 

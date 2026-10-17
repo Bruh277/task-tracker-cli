@@ -6,15 +6,19 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class TaskManager {
     private final Path filePath;
     private ArrayList<Task> taskList;
+    private Scanner scanner;
 
-    public TaskManager(String fileName){
+    public TaskManager(String fileName) throws IOException {
         this.filePath = Paths.get(fileName);
         this.taskList = new ArrayList<>();
+        initializeFile();
         loadTasksFromJson();
+        Scanner scanner = new Scanner(System.in);
     }
 
     public void initializeFile() throws IOException {
@@ -50,7 +54,7 @@ public class TaskManager {
     }
 
     public Task parseTasksFromJson(String jsonObject){
-        String id = extractJsonObjectValue(jsonObject, "id");
+        int id = Integer.parseInt(extractJsonObjectValue(jsonObject, "id"));
         String description = extractJsonObjectValue(jsonObject, "description");
         String statusString = extractJsonObjectValue(jsonObject, "status");
         String taskCreationTimeString = extractJsonObjectValue(jsonObject, "taskCreationTime");
@@ -100,6 +104,36 @@ public class TaskManager {
         jsonFormattedTaskList.append("]");
 
         Files.writeString(this.filePath, jsonFormattedTaskList.toString());
+    }
+
+    public void addTask(){
+        System.out.println("Please provide the Description of the Task.");
+        String taskDescription = scanner.nextLine();
+
+        System.out.println("Optional: Please provide the Status of the Task. An empty input will skip this part.");
+        String userInput = scanner.nextLine();
+        Task newTask;
+
+        if(userInput.isEmpty()){
+            newTask = new Task(this.generateNextId(), taskDescription);
+        } else{
+            TaskStatus taskStatus = TaskStatus.parseTaskStatusFromInputString(userInput);
+            newTask = new Task(this.generateNextId(),taskDescription, taskStatus);
+        }
+
+        this.taskList.add(newTask);
+    }
+
+    private int generateNextId(){
+        int currentMaxId = 0;
+
+        for(Task task : this.taskList){
+            if(task.getId() > currentMaxId){
+                currentMaxId = task.getId();
+            }
+        }
+
+        return currentMaxId + 1;
     }
 
     public ArrayList<Task> getTaskList(){
