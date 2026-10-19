@@ -64,6 +64,11 @@ public class Task {
     }
 
 
+    public void setDescription(String newDescription){
+        this.description = newDescription;
+        this.lastUpdatedTime = LocalDateTime.now();
+    }
+
     public void setStatus(TaskStatus newStatus){
         this.status = newStatus;
         this.lastUpdatedTime = LocalDateTime.now();

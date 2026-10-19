@@ -18,7 +18,7 @@ public class TaskManager {
         this.taskList = new ArrayList<>();
         initializeFile();
         loadTasksFromJson();
-        Scanner scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
     public void initializeFile() throws IOException {
@@ -106,7 +106,7 @@ public class TaskManager {
         Files.writeString(this.filePath, jsonFormattedTaskList.toString());
     }
 
-    public void addTask(){
+    public void addTask() throws IOException {
         System.out.println("Please provide the Description of the Task.");
         String taskDescription = scanner.nextLine();
 
@@ -116,12 +116,18 @@ public class TaskManager {
 
         if(userInput.isEmpty()){
             newTask = new Task(this.generateNextId(), taskDescription);
-        } else{
+        } else {
             TaskStatus taskStatus = TaskStatus.parseTaskStatusFromInputString(userInput);
-            newTask = new Task(this.generateNextId(),taskDescription, taskStatus);
+            if(taskStatus == null){
+                System.out.println("Incorrect Task Status input");
+                return;
+            } else{
+                newTask = new Task(this.generateNextId(),taskDescription, taskStatus);
+            }
         }
 
         this.taskList.add(newTask);
+        this.saveTasksToJson();
     }
 
     private int generateNextId(){
@@ -134,6 +140,36 @@ public class TaskManager {
         }
 
         return currentMaxId + 1;
+    }
+
+    //Remember that the methods that depend on this method have to account for null.
+    private Task findTaskById(int id){
+        for(Task task : this.taskList){
+            if(task.getId() == id){
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public void updateTaskDescription(int id) throws IOException{
+        Task taskToBeUpdated = this.findTaskById(id);
+        if(taskToBeUpdated == null){
+            System.out.println("No such task found");
+        } else{
+            while(true){
+                System.out.println("Please enter the new Task Description:");
+                String userInput = scanner.nextLine();
+
+                if(userInput.isEmpty()){
+                    System.out.println("Empty input entered.");
+                } else{
+                    taskToBeUpdated.setDescription(userInput);
+                    this.saveTasksToJson();
+                    break;
+                }
+            }
+        }
     }
 
     public ArrayList<Task> getTaskList(){
