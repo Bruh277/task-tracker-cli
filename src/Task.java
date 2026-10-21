@@ -74,4 +74,7 @@ public class Task {
         this.lastUpdatedTime = LocalDateTime.now();
     }
 
+    public String toString(){
+        return "Task ID: " + this.id + "\n" + "Task Status: " + this.status.getTaskStatus() + "\n" + "Task Description: " + this.description + "\n";
+    }
 }

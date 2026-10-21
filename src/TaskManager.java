@@ -229,6 +229,53 @@ public class TaskManager {
         }
     }
 
+    public void listTasks() {
+        while(true){
+            System.out.println("Please enter the number corresponding to the type of Tasks you wish listed:");
+            System.out.println("Enter '0' to list All Tasks.");
+            System.out.println("Enter '1' to list only Tasks marked 'todo'");
+            System.out.println("Enter '2' to list only Tasks marked 'in-progress'");
+            System.out.println("Enter '3' to list only Tasks marked 'done'");
+
+            try {
+                int userInput = Integer.valueOf(scanner.nextLine());
+
+                switch (userInput) {
+                    case 0:
+                        for (Task task : this.taskList) {
+                            System.out.println(task.toString());
+                        }
+                        return;
+                    case 1:
+                        for (Task task : this.taskList) {
+                            if(task.getStatus() == TaskStatus.TODO){
+                                System.out.println("Task ID: " + task.getId() + "\n" + "Task Description: " + task.getDescription() + "\n");
+                            }
+                        }
+                        return;
+                    case 2:
+                        for (Task task : this.taskList) {
+                            if(task.getStatus() == TaskStatus.IN_PROGRESS){
+                                System.out.println("Task ID: " + task.getId() + "\n" + "Task Description: " + task.getDescription() + "\n");
+                            }
+                        }
+                        return;
+                    case 3:
+                        for (Task task : this.taskList) {
+                            if(task.getStatus() == TaskStatus.DONE){
+                                System.out.println("Task ID: " + task.getId() + "\n" + "Task Description: " + task.getDescription() + "\n");
+                            }
+                        }
+                        return;
+                    default:
+                        System.out.println("Invalid number entered. Please enter a number that corresponds to one of the following options.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number.");
+            }
+        }
+    }
+
     public ArrayList<Task> getTaskList(){
         return this.taskList;
     }
